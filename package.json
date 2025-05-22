@@ -1,0 +1,24 @@
+{
+  "scripts": {
+    "start": "webpack serve --mode=development --open --config webpack.dev.js",
+    "build": "webpack --mode=production --config webpack.prod.js"
+  },
+  "dependencies": {
+    "css-loader": "^7.1.2",
+    "date-fns": "^4.1.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1",
+    "webpack-merge": "^6.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "3.5.3"
+  }
+}
