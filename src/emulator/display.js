@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 export default class Display {
     constructor(canvas, getPixelColor) {
       this.canvas = canvas;

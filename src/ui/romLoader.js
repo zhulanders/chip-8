@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export default function setupRomLoader(chip8, containerElement) {
     const preloadedRoms = [
       { name: 'IBM Logo(Example)', url: '/roms/logo.ch8' },

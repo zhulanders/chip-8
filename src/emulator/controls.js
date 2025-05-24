@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const keyMap = {
     'Digit1': 0x1, 'Digit2': 0x2, 'Digit3': 0x3, 'Digit4': 0xC,
     'KeyQ': 0x4, 'KeyW': 0x5, 'KeyE': 0x6, 'KeyR': 0xD,
