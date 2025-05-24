@@ -49,17 +49,25 @@ export default class Chip8 {
         this.programLoaded = true;
     }
 
+    reset() {
+        this.memory.fill(0);
+        this.v.fill(0);
+        this.I = 0;
+        this.pc = 0x200;
+        this.stack = [];
+        this.delayTimer = 0;
+        this.soundTimer = 0;
+        this.programLoaded = false;
+        this.display.fill(0);
+        this.keys.fill(false);
+        this.loadfontSet();
+    }
+    
     cycle(){
         if (!this.programLoaded) return;
         
         const opcode = this.fetch();
         this.decode(opcode);
-        if (this.delayTimer > 0) {
-            this.delayTimer--;
-        }
-        if (this.delayTimer > 0) {
-            this.soundTimer--;
-        }
     }
     
     fetch(){
@@ -135,11 +143,13 @@ export default class Chip8 {
                         this.v[0xF] = sum > 0xFF ? 1 : 0;   
                         this.v[x] = sum & 0xFF;             
                         break;
-                    case(0x0005):
+                    case(0x0005): 
+                        
                         this.v[0xF] = this.v[x] >= this.v[y] ? 1 : 0;
                         this.v[x] = (this.v[x] - this.v[y]) & 0xFF;
                         break;
                     case(0x0006):
+                    this.v[x]= this.v[y];
                         this.v[0xF] = this.v[x] & 0x1;        
                         this.v[x] >>= 1;                     
                         break;
@@ -148,6 +158,7 @@ export default class Chip8 {
                         this.v[x] = (this.v[y] - this.v[x]) & 0xFF;
                         break;
                     case(0x000E):
+                        this.v[x]= this.v[y];
                         this.v[0xF] = (this.v[x] & 0x80) >> 7; 
                         this.v[x] = (this.v[x] << 1) & 0xFF;   
                     break;
@@ -177,12 +188,9 @@ export default class Chip8 {
                     const spriteByte = this.memory[this.I + row];
                     for (let col = 0; col < 8; col++) {
                         const spritePixel = (spriteByte >> (7 - col)) & 1; 
-            
-                        const px = xCoord + col;
-                        const py = yCoord + row;
-            
                        
-                        if (px >= 64 || py >= 32) continue;
+                        const px = (xCoord + col) % 64;
+                        const py = (yCoord + row) % 32;
             
                         const index = py * 64 + px;
             
@@ -246,12 +254,12 @@ export default class Chip8 {
                         break;
                     case(0x0055):
                         for (let i = 0; i <= x; i++) {
-                            this.memory[this.I + i] = this.v[i];
+                            this.memory[this.I++] = this.v[i];
                         }
                         break;
                     case(0x0065):
                         for (let i = 0; i <= x; i++) {
-                        this.v[i] = this.memory[this.I + i];
+                            this.v[i] = this.memory[this.I++];
                         }
                         break;
 

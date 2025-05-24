@@ -4,10 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chip-8 Emulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <input type="file" id="romLoader" />
-    <canvas id="screen" width="640" height="320"></canvas>
+    <div class="settings" id="leftSidebar">
+        <input type="file" id="romLoader" />
+        <label for="hzSlider">Emulation Speed (Hz): <span id="hzValue">60</span></label>
+        <input type="range" id="hzSlider" min="30" max="120" value="60" />
+        <div class="color-controls">
+            <label>R: <input type="range" id="rSlider" min="0" max="255" value="255"></label>
+            <label>G: <input type="range" id="gSlider" min="0" max="255" value="255"></label>
+            <label>B: <input type="range" id="bSlider" min="0" max="255" value="255"></label>
+        </div>
+    </div>
+    <div id="canvas-container">
+        <canvas id="screen" width="640" height="320"></canvas>
+    </div>
     
+    <div class="roms" id="rightSidebar"> </div>
 </body>
 </html>
