@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="settings" id="leftSidebar">
+        <label id="customFileBtn" for="romLoader">Load ROM</label>
         <input type="file" id="romLoader" />
         <label for="hzSlider">Emulation Speed (Hz): <span id="hzValue">60</span></label>
         <input type="range" id="hzSlider" min="30" max="120" value="60" />
@@ -19,9 +20,14 @@
             <label>B: <input type="range" id="bSlider" min="0" max="255" value="255"></label>
         </div>
     </div>
+    
     <div id="canvas-container">
+        <div id="title-container">
+          <h1>Chip-8 Emulator</h1>
+          <h3>by <span style="font-weight: bold;">Joshua Zhu</span></h3>
+        </div>
         <canvas id="screen" width="640" height="320"></canvas>
-    </div>
+      </div>
     
     <div class="roms" id="rightSidebar"> </div>
 </body>
