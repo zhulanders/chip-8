@@ -33,7 +33,9 @@ The Chip-8 uses a 16-key hexadecimal keypad. The keys are mapped to your physica
 | 0          | X            |
 | B          | C            |
 | F          | V            |
+
 ![Keypad](images/keypad.png)
+
 ## Installation & Development
 
 1. Clone the repository:
