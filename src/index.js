@@ -1,82 +1,64 @@
-class Chip8 {
-    constructor(){
-        this.memory = new Uint8Array(4096); //4kb of RAM
-        this.v = new Uint8Array(16); //16 variable registers
-        this.I = 0; //index register
-        this.pc = 0x200; //program counter
-        this.stack = [];
-        this.delayTimer = 0;
-        this.soundTimer = 0;
 
-        this.display = new Array(64 * 32).fill(0);
-        this.keys = new Array(16).fill(false);
-        
-        this.loadfontSet();
-    }
-    loadfontSet(){
-        fontSetArr = [0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-            0x20, 0x60, 0x20, 0x20, 0x70, // 1
-            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-        ];
-        for (let i = 0; i < fontSetArr.length; i++){
-            this.memory[i + 0x50] = fontSetArr[i];
-        }
-    }
-    cycle(){
-        const opcode = fetch();
-        decode(opcode);
-    }
-    fetch(){
-        const opcode = (this.memory[this.pc] << 8) | this.memory[this.pc + 1];
-        this.pc += 2;
-        return opcode;
-    }
-    decode(opcode){
-        const x = (opcode & 0x0F00) >> 8;
-        const y = (opcode & 0x00F0) >> 4;
-        const n = opcode & 0x000F;
-        const nn = opcode & 0x00FF;
-        const nnn = opcode & 0x0FFF;
+import Chip8 from "./chip8";
 
-        switch(opcode & 0xF000) {
-            case (0x0000):
-                switch(opcode & 0x00FF){
-                    case 0x00E0:
-                        this.display.fill(0);
-                        break;
-                    case 0x00EE:
-                        this.pc = this.stack.pop();
-                }
-            case(0x1000):
-                this.pc = nnn;
-                break;
-            case(0x2000):
-                this.stack.push(this.pc);
-                this.pc = nnn;
-                break;
-            case(0x6000):
-                this.v[x] = nn;
-                break;
-            case(0x7000):
-                this.v[x] += nn;
-                break;
-            case(0xA000):
-                this.I = nnn;
-            case(0xD000):
-                
+const canvas = document.getElementById('screen');
+const ctx = canvas.getContext('2d');
+function drawDisplay(chip8) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#000'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < 32; y++) {
+      for (let x = 0; x < 64; x++) {
+        const pixel = chip8.display[y * 64 + x];
+        if (pixel) {
+          console.log('draw');
+          ctx.fillStyle = '#FFF';
+          ctx.fillRect(x * 10, y * 10, 10, 10);
         }
+      }
     }
-}
+  }
+const chip8 = new Chip8();
+
+setInterval(() => {
+    for (let i = 0; i < 10; i++) chip8.cycle();
+    drawDisplay(chip8);
+}, 1000 / 60);
+document.getElementById('romLoader').addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    const arrayBuffer = await file.arrayBuffer();
+    chip8.loadProgram(new Uint8Array(arrayBuffer));
+});
+const keyMap = {
+  'Digit1': 0x1,
+  'Digit2': 0x2,
+  'Digit3': 0x3,
+  'Digit4': 0xC,
+  'KeyQ':  0x4,
+  'KeyW':  0x5,
+  'KeyE':  0x6,
+  'KeyR':  0xD,
+  'KeyA':  0x7,
+  'KeyS':  0x8,
+  'KeyD':  0x9,
+  'KeyF':  0xE,
+  'KeyZ':  0xA,
+  'KeyX':  0x0,
+  'KeyC':  0xB,
+  'KeyV':  0xF
+};
+window.addEventListener('keydown', (event) => {
+  const chipKey = keyMap[event.code];
+  if (chipKey !== undefined) {
+    chip8.keys[chipKey] = true;
+    event.preventDefault(); 
+  }
+});
+
+window.addEventListener('keyup', (event) => {
+  const chipKey = keyMap[event.code];
+  if (chipKey !== undefined) {
+    chip8.keys[chipKey] = false;
+    event.preventDefault();
+  }
+});
