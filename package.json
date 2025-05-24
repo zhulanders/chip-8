@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "webpack serve --mode=development --open --config webpack.dev.js",
-    "build": "webpack --mode=production --config webpack.prod.js"
+    "build": "webpack --mode=production --config webpack.prod.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "css-loader": "^7.1.2",
@@ -20,6 +22,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.31.0",
+    "gh-pages": "^6.3.0",
     "prettier": "3.5.3"
   }
 }
