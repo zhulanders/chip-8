@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 export default function setupRomLoader(chip8, containerElement) {
     const preloadedRoms = [
-      { name: 'IBM Logo(Example)', url: '/roms/logo.ch8' },
-      { name: 'Super Pong', url: '/roms/pong.ch8' },
-      { name: 'Snake', url: '/roms/snake.ch8' },
-      { name: 'Space Invaders', url: '/roms/invaders.ch8' },
+      { name: 'IBM Logo(Example)', url: 'roms/logo.ch8' },
+      { name: 'Super Pong', url: 'roms/pong.ch8' },
+      { name: 'Snake', url: 'roms/snake.ch8' },
+      { name: 'Space Invaders', url: 'roms/invaders.ch8' },
     ];
   
     async function loadRom(url) {
